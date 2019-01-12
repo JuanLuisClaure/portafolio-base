@@ -1,0 +1,11 @@
+cupones{
+    background-color: transparent;
+    z-index: 2;
+    display: grid;
+    grid-template-columns:1fr 44vw 1fr;
+    grid-template-rows:50vh 25vh;
+    align-items:center;
+    justify-items:center;
+    max-width: 97%;
+
+}

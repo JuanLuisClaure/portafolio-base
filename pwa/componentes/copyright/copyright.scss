@@ -1,0 +1,114 @@
+copyright{
+    background-color: $colorD;
+    max-width: 97%;
+    display:grid;
+    grid-template-columns:30vw 1fr 30vw;
+    grid-template-rows:auto;
+    justify-items: center;
+    align-items: center;
+}
+
+$body-bg: #FAFAFA;
+//Other pretty primary colors: E91E63 FF5722
+$primary-col: #03A9F4;
+$accent-col: #FFC400;
+$accent-fallback: #FFD740;
+
+$font-stack: Roboto, sans-serif;
+$easer: cubic-bezier(0.4, 0, 0.2, 1);
+
+
+
+
+.subs{
+  margin: 0;
+}
+
+.buttons{
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 60px;
+  font-weight: bold;
+  transform: rotate(45deg);
+
+  transition: all 0.7s $easer;
+}
+.expands .buttons {
+  transform: rotate(630deg);
+
+  transition: all 0.5s $easer;
+}
+
+.containers {
+  position: fixed;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 3vh;  
+  background-color: $primary-col;
+  z-index:1;
+  border-radius: 50%;
+  width: 60px;
+  max-width: 60px;
+  height: 60px;
+  text-align: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  overflow: hidden;
+
+  transition: all 0.2s 0.45s,
+              height 0.2s $easer 0.25s, 
+              max-width 0.2s $easer 0.35s, 
+              width 0.2s $easer 0.35s;
+}
+.containers.expands {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.17);
+  border-radius: 0;
+  width: 80%;
+  height: 500px;
+  max-width: 600px;
+  padding: 0;
+
+  transition: all 0.2s, max-width 0.2s $easer 0.1s, height 0.3s ease 0.25s;
+}
+
+.contents {
+  transform: translateY(100%);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  text-align: left;
+  z-index: 4;
+  transition: transform 0.2s $easer, opacity 0.2s 0.2s;
+}
+.expands .contents {
+  transform: translateY(0px);
+  opacity: 1;
+  transition: transform 0.7s $easer 0.05s, opacity 0s;
+}
+
+.contents .heads {
+  padding: 0 0 20px 0;
+}
+.contents .bodys {
+  color: #000;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #FFF;
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.action-bars {
+  padding-left: 15px;
+  border-top: 1px solid #E0E0E0;
+  width: 100%;
+}
+.action-bars a {
+  text-transform: uppercase;
+  line-height: 52px;
+  color: $accent-col;
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="PWA-framework for pwa doers" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <title>PWA-Dashboard</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="/client/www.css" type="text/css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js"></script>
+  <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.12.0/riot.min.js" charset="utf-8"></script>
+  <script src="/server/components/bloqueo.js" charset="utf-8"></script>
+  <script src="/server/components/panel-perfil.js" charset="utf-8"></script>
+  <script src="/server/components/panel-buzon.js" charset="utf-8"></script>
+  <script src="/server/components/panel-coleccion.js" charset="utf-8"></script>
+  <script src="/server/components/panel-contenido.js" charset="utf-8"></script>
+  <script src="/server/components/panel-estadisticas.js" charset="utf-8"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    console.log('pintando cliente');
+
+
+  </script>
+</head>
+
+
+
+
+    <body style="min-height:100vh!important;position:relative;margin:0;">
+
+                    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer" style="height: 100vh!important;">
+                    <div id="drawerconteiner" class="mdl-layout__drawer" style="width: 111px!important;">
+                      <span class="mdl-layout-title">App</span>
+                      <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" href="/dashboard/perfil">
+                          <i class="material-icons">share</i>
+                          <span style="font-size: .8rem;">presentacion</span>
+                        </a>
+                        <a class="mdl-navigation__link" href="/dashboard/mensaje">
+                          <i class="material-icons">share</i>
+                          <span style="font-size: .8rem;">clientes</span>
+
+                        </a>
+                        <a class="mdl-navigation__link" href="/dashboard/dinamico">
+                          <i class="material-icons">share</i>
+                          <span style="font-size: .8rem;">collecion</span>
+ 
+                        </a>
+                        <a class="mdl-navigation__link" href="/dashboard/estadisticas">
+                          <i class="material-icons">share</i>
+                          <span style="font-size: .8rem;">contenido</span>
+
+                        </a>
+                        <a class="mdl-navigation__link" href="/dashboard/estadisticas">
+                          <i class="material-icons">share</i>
+                          <span style="font-size: .8rem;">blog</span>
+
+                        </a>
+                        <a class="mdl-navigation__link" href="/dashboard/estadisticas">
+                          <i class="material-icons">share</i>
+                          <span style="font-size: .8rem;">instquestion</span>
+
+                        </a>
+                        <a class="mdl-navigation__link" href="/dashboard/estadisticas">
+                          <i class="material-icons">share</i>
+                          <span style="font-size: .8rem;">estadisticas</span>
+
+                        </a>
+                      </nav>
+                    </div>
+                    <main id="mainconteiner" class="mdl-layout__content" style="background-color: black!important;    margin-left: 92px!important;width:92.92vw!important" >
+
+                          {{ renderHere | safe }}
+
+                    </main>
+                    </div>
+
+        </body>
+
+
+                <script type="text/javascript">
+
+                const askri = '{{ componente }}'
+                const datoserver = '{{ data | json }}'
+                const sertr = datoserver.replace(/&quot;/g,'"')
+                const par = sertr.replace(/&#39;/g,"'")
+                const jsondata = JSON.parse(par)
+
+                  console.log(jsondata);
+                
+
+                  window.sockete = io('/usuarioSinRestrincciones')
+                  window.sockete.on('cliente:message',(as)=>{
+
+                    if (riot.update()[1]!==undefined) {
+                      riot.update()[1].opts.info = as.data
+                      riot.update()
+                    }else{
+                      let storekey = jsondata[as.data.info.cookie]
+                      storekey[1] = as.data
+                      storekey[0] = as.key
+                      riot.update()
+                    }
+
+
+
+
+                   })
+
+
+
+                    //
+                    // console.log(document.getElementById('mainconteiner').children[0]);
+                    // const verquepasa = riot.tag('panel-buzon', false, function(opts){
+                    //   console.log(this, 'asegurando datos');
+                    // })
+                    // console.log(verquepasa);
+                    document.addEventListener('DOMContentLoaded', ()=>{
+                      // riot.tag('panel-buzon', false, function(opts){
+                      //   console.log(opts);
+                      // })
+
+                      // riot.mount(askri)
+                      riot.mount(askri,function() {
+
+                                         return { data: jsondata }
+                                      })
+
+
+                     })
+
+                     window.addEventListener('hashchange',(e)=>{
+                      
+                      let newURL = e.newURL;
+                      let oldURL = e.oldURL;
+                      let hashURL = window.location.hash
+      
+                        let sometaskbefore =  hashURL.split('#')
+                        let rendercmpntreal = sometaskbefore[1]
+                        let introHere = document.querySelector('#acarenderizoloscomponentes')
+                        introHere.innerHTML=''
+                        introHere.innerHTML = `<${rendercmpntreal}></${rendercmpntreal}>`
+                    
+                      riot.mount(rendercmpntreal, function () {
+                        return {
+                          data: jsondata[rendercmpntreal].data
+                        }
+                      })
+                      let drwr = document.querySelector('#drawerconteiner')
+                        let mn   = document.querySelector('#mainconteiner')
+                        drwr.style.transform = "translateX(-192px)"
+                        mn.style.marginLeft = "0"
+                        mn.style.width = "100vw"
+                        let drwrinterno = document.querySelector('#drawerconteinerinterno')
+                        let mninterno   = document.querySelector('#mainconteinerinterno')
+                        drwrinterno.style.transform = "translateX(-192px)"
+                        mninterno.style.marginLeft = "0"
+                        mninterno.style.width = "100vw"
+                        let mipa = document.querySelector('#mipaneldecontrol')
+                        mipa.style.display = "block"
+                      
+                     
+                     },false)
+
+
+
+
+                </script>
+
+
+</html>

@@ -1,0 +1,13 @@
+correo{
+    background-color: transparent;
+    display:grid;
+    max-width: 97%;
+    grid-template-columns: 55vw 44vw;
+    grid-template-rows:59vh 17vh;
+    z-index: 2;
+    grid-template-areas:
+    "timeline correo"
+     "timeline submit"
+}
+
+

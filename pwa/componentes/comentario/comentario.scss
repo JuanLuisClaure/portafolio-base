@@ -1,0 +1,15 @@
+comentario{
+    background-color: transparent;
+    display:grid;
+    grid-template-columns:1fr 46vw 1fr;
+    grid-template-rows:66vh 11vh;
+    z-index: 2;
+    max-width: 97%;
+}
+.slide-out-bottom {
+	animation: slide-out-bottom 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}.slide-out-br {
+	animation: slide-out-br 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}.slide-out-bl {
+	animation: slide-out-bl 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
